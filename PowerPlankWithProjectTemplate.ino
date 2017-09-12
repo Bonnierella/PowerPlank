@@ -32,7 +32,7 @@
 // select which project is started by pressing the button on the project board
 //
 
-#define BUTTON_STARTS_PROJECT_NUMBER 3
+#define BUTTON_STARTS_PROJECT_NUMBER 1
 
 //
 // display version number for architecture AMIB / Power Plank functionality
@@ -96,7 +96,7 @@ void setup()
 //
 // setup the Multi Interface Board
 //
-void setupMultiInterfaceBoard()
+/*void setupMultiInterfaceBoard()
 {
   //
   // configure the LED and button
@@ -140,7 +140,7 @@ void setupMultiInterfaceBoard()
   digitalWrite(STEPPER_2_STEP_PIN, LOW);
 
 }
-
+*/              
 
 // ---------------------------------------------------------------------------------
 //                   The main loop, with one button user interface

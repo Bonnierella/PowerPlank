@@ -1,8 +1,8 @@
 //      ******************************************************************
 //      *                                                                *
 //      *                            Project 1                           *
-//      *      Project name: __________________________________          *
-//      *      Student name: __________________________________          *
+//      *      Project name: Robot Arm_________________________          *
+//      *      Student name: Bonnie Dawson_____________________          *
 //      *                                                                *
 //      *      Copyright (c) Dos Pueblos Engineering Academy, 2017       *
 //      *                                                                *
@@ -12,17 +12,39 @@
 //
 // declare IO pins below, ie: const byte LIMIT_SWITCH_1_PIN = 21;
 //
+const byte ARM_HOMING_PROX = 23; 
+const byte PROXIMITY_PIN = 24;
 
+const byte microStepping = 4;
+const float accelerationInRpsps = 0.5;
+const float stepperSpeed = 0.5;
 
 //
 // declare objects below, ie:  RCServo servo1;  or  SpeedyStepper stepper1;
 //
+SpeedyStepper stepper1;
 
 
-
+const int transmissionRatio = 2;
 
 byte project1WorkingFlag = true;
+
 bool project1InitializedFlag;
+
+void moveArmToTower(){
+ stepper1.moveToPositionInRevolutions(0.25);
+}
+
+void towerToTower(){
+  stepper1.moveToPositionInRevolutions(0);
+  //stepper1.moveToPositionInRevolutions(0.4);
+
+  bool senorDoesNotSeeMetal = digitalRead(PROXIMITY_PIN);
+
+  if(senorDoesNotSeeMetal){
+    stepper1.moveToPositionInRevolutions(0.4);
+  }
+}
 
 
 // ---------------------------------------------------------------------------------
@@ -53,7 +75,7 @@ void setupProject1()
   //
   // connect objects to pins below, ie: stepper1.connectToPort(1);  or  servo1.connectToPin(8);) 
   //
-
+stepper1.connectToPort(1);
 
   //
   // set to true to indicate that this project is working
@@ -79,7 +101,12 @@ void initializeProject1(void)
   //
   // initialize things that take time here
   //
+  stepper1.setStepsPerRevolution(200 * microStepping * transmissionRatio);
+  stepper1.setSpeedInRevolutionsPerSecond(stepperSpeed);
+  stepper1.setAccelerationInRevolutionsPerSecondPerSecond(accelerationInRpsps);
 
+  stepper1.moveToHomeInRevolutions(-1, stepperSpeed, 1, ARM_HOMING_PROX);
+  
 
   project1InitializedFlag = true;
 }
@@ -95,7 +122,8 @@ void enableProject1(void)
   //
   // enable high current devices below, ie: stepper1.enableStepper();
   //
-  
+
+  stepper1.enableStepper();
 }
 
 
@@ -109,7 +137,7 @@ void disableProject1(void)
   //
   // disable high current devices below, ie: stepper1.disableStepper();
   //
-
+stepper1.disableStepper();
 }
 
 
@@ -119,8 +147,11 @@ void disableProject1(void)
 //
 void runProject1(byte databyte)
 { 
-  
-  
+  delay(500);
+  moveArmToTower();
+  delay(500);
+  towerToTower();
+  delay(500);
 }
 
 
